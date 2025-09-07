@@ -1,0 +1,30 @@
+# customer_segmentation.py
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+
+# Example dataset: Generate synthetic customer data
+np.random.seed(42)
+data = {
+    'Annual_Income': np.random.randint(20, 120, 200),
+    'Spending_Score': np.random.randint(1, 100, 200)
+}
+df = pd.DataFrame(data)
+
+# Scale features
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(df)
+
+# Apply K-Means
+kmeans = KMeans(n_clusters=4, random_state=42)
+df['Cluster'] = kmeans.fit_predict(X_scaled)
+
+# Plot clusters
+plt.scatter(df['Annual_Income'], df['Spending_Score'], c=df['Cluster'], cmap='viridis')
+plt.xlabel("Annual Income (k$)")
+plt.ylabel("Spending Score (1-100)")
+plt.title("Customer Segmentation using K-Means")
+plt.show()
